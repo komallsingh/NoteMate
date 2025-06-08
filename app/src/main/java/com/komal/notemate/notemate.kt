@@ -23,33 +23,47 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.Modifier
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-
-
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.BasicAlertDialog
+import androidx.compose.ui.Alignment
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material3.Icon
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.outlined.FavoriteBorder
+import androidx.compose.material3.IconButton
 
 @Composable
 fun NoteMate() {
     val songs = remember {
         mutableStateListOf(
-            Song("Song 1", ""),
-            Song("Song 2", ""),
-            Song("Song 3", "")
+            Song("Heat Waves", ""),
+            Song("Night Changes", ""),
+            Song("Memories", "")
         )
     }
-
+    var showDialog by remember { mutableStateOf(false) }
+    //var editid by remember  { mutableStateOf<Int?>(null) }
+    var newSong by remember { mutableStateOf("") }
     Column(
-        modifier = Modifier
+        Modifier
             .fillMaxSize()
             .background(Color.Gray)
-            .padding(16.dp)
+            .padding(16.dp), Arrangement.Top
     ) {
         Text(
             text = "Your Own Music Notebook",
             fontSize = 28.sp,
-            modifier = Modifier.padding(bottom = 16.dp)
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.padding(bottom = 16.dp).align(Alignment.CenterHorizontally).height(40.dp).offset(y=12.dp)
         )
 
         LazyColumn(
@@ -63,43 +77,100 @@ fun NoteMate() {
 
         Button(
             onClick = {
-                songs.add(Song("New Song ${songs.size + 1}", ""))
+                //songs.add(Song("New Song ${songs.size + 1}", ""))
+                showDialog=true
             },
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 16.dp)
+                .padding(top = 16.dp).offset(y=-20.dp)
         ) {
             Text("Add Your Song")
         }
-    }
+        //SHOW DIALOG
+        if(showDialog){
+            androidx.compose.material3.AlertDialog(
+                onDismissRequest ={
+                    showDialog=false
+                    newSong=""
+                },
+                confirmButton={
+                    Button(
+                        onClick = {
+                            if(newSong.isNotBlank()){
+                                songs.add(Song(newSong,""))
+                                newSong=""
+                                showDialog=false
+                            }
+                        },
+                        modifier=Modifier.fillMaxWidth()
+                    ) {
+                        Text("Add")
+                    }
+                },
+                title = {Text("Enter your Song")},
+                text = {
+                    OutlinedTextField(
+                        value=newSong,
+                        onValueChange = {
+                            newSong=it
+                        },
+                        label={ Text("Your Song") }
+                    )
+                }
+            )
+        }
+
+
+
+
+        }
 }
 
 @Composable
 fun SongItem(song: Song) {
     var description: String by remember { mutableStateOf(song.description) }
-
+    var isFavorite by remember { mutableStateOf(song.isFavorite) }
     Card(
         elevation = CardDefaults.cardElevation(6.dp),
-        colors = CardDefaults.cardColors(containerColor = Color(0xFFD1C4E9)),
+        colors = CardDefaults.cardColors(containerColor = Color.DarkGray),
         modifier = Modifier.fillMaxWidth()
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
-            Text(song.name, fontSize = 20.sp, fontWeight = FontWeight.SemiBold)
-            Spacer(modifier = Modifier.height(8.dp))
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(song.name, fontSize = 20.sp, fontWeight = FontWeight.SemiBold)
+                Icon(
+                    imageVector = Icons.Default.PlayArrow,
+                    contentDescription = "Play Icon",
+                    modifier = Modifier.size(30.dp)
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                IconButton(onClick = {
+                    isFavorite = !isFavorite
+                    song.isFavorite = isFavorite
+                }) {
+                    Icon(
+                        imageVector = if (isFavorite) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder,
+                        contentDescription = "Favorite",
+                        tint = if (isFavorite) Color.Red else Color.LightGray
+                    )
+                }
+            }
             OutlinedTextField(
-                value = description,
-                onValueChange = {
-                    description = it
-                    song.description = it
-                },
-             label = { Text("Description / Notes") },
-                modifier = Modifier.fillMaxWidth()
-            )
+                    value = description,
+                    onValueChange = {
+                        description = it
+                        song.description = it
+                    },
+                    label = { Text("Write what you feel!") },
+                    modifier = Modifier.fillMaxWidth()
+                )
         }
     }
 }
 
 data class Song(
     val name: String,
-    var description: String
+    var description: String,
+    var isEditing: Boolean = false,
+    var isFavorite: Boolean = false
 )
