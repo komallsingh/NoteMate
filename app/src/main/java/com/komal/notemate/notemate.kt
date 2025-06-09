@@ -1,5 +1,6 @@
 package com.komal.notemate
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.width
@@ -40,13 +41,14 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.IconButton
+import androidx.compose.ui.res.painterResource
 
 @Composable
 fun NoteMate() {
     val songs = remember {
         mutableStateListOf(
             Song("Heat Waves", ""),
-            Song("Night Changes", ""),
+            Song("The Night We Met", ""),
             Song("Memories", "")
         )
     }
@@ -136,6 +138,29 @@ fun SongItem(song: Song) {
         modifier = Modifier.fillMaxWidth()
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
+            if (song.name == "Heat Waves") {
+                Image(
+                    painter = painterResource(id = R.drawable.heatwaves),
+                    contentDescription = "Heat Waves Cover",
+                    modifier = Modifier.fillMaxSize()
+                        .size(180.dp)
+                        .padding(end = 5.dp)
+                )
+            }
+            if (song.name == "The Night We Met") {
+                Image(
+                    painter = painterResource(id = R.drawable.night),
+                    contentDescription = "Night Cover",
+                    modifier = Modifier.fillMaxSize()
+                        .size(180.dp)
+                        .padding(end = 5.dp)
+                )
+            }
+            if(song.name=="Memories"){
+                Image(painterResource(id = R.drawable.memo),
+                contentDescription = "Memories Cover",
+                    modifier = Modifier.fillMaxWidth().size(180.dp).padding(end=5.dp))
+            }
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(song.name, fontSize = 20.sp, fontWeight = FontWeight.SemiBold)
                 Icon(
@@ -154,6 +179,8 @@ fun SongItem(song: Song) {
                         tint = if (isFavorite) Color.Red else Color.LightGray
                     )
                 }
+
+                //Text(text = song.name)
             }
             OutlinedTextField(
                     value = description,
