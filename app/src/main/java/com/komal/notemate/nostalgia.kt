@@ -187,7 +187,7 @@ fun SongItem(song: Song) {
                         song.description = it
                     },
                     label = { Text("Write what you feel!") },
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth().padding(20.dp)
                 )
         }
     }
