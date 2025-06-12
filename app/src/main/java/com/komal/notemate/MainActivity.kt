@@ -29,6 +29,9 @@ class MainActivity : ComponentActivity() {
                 composable("nostalgia"){
                     NoteMate()
                 }
+                composable("happy"){
+                    happy()
+                }
             })
             }
         }

@@ -47,7 +47,8 @@ fun NoteMate() {
         mutableStateListOf(
             Song("Heat Waves", ""),
             Song("The Night We Met", ""),
-            Song("Memories", "")
+            Song("Memories", ""),
+            Song("Photograph", "")
         )
     }
     var showDialog by remember { mutableStateOf(false) }
@@ -158,6 +159,15 @@ fun SongItem(song: Song) {
                 Image(painterResource(id = R.drawable.memo),
                 contentDescription = "Memories Cover",
                     modifier = Modifier.fillMaxWidth().size(180.dp).padding(end=5.dp))
+            }
+            if (song.name == "Photograph") {
+                Image(
+                    painter = painterResource(id = R.drawable.photo),
+                    contentDescription = "Photo Cover",
+                    modifier = Modifier.fillMaxSize()
+                        .size(180.dp)
+                        .padding(end = 5.dp)
+                )
             }
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(song.name, fontSize = 20.sp, fontWeight = FontWeight.SemiBold)

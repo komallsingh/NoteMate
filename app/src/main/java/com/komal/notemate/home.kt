@@ -70,28 +70,18 @@ fun homeScreen(navController: NavController){
                     thickness = 3.dp,
                     modifier = Modifier.padding(horizontal = 8.dp)
                 )
-                DropdownMenuItem(text={ Text("Happy",
+                DropdownMenuItem(text={ Text("Dance",
                     fontWeight = FontWeight.SemiBold,
                     modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp),
                     textAlign = TextAlign.Center) },
                     onClick ={
-                        navController.navigate("nostalgia")})
+                        navController.navigate("happy")})
                 Divider(
                     color = Color.Gray,
                     thickness = 3.dp,
                     modifier = Modifier.padding(horizontal = 8.dp)
                 )
-                DropdownMenuItem(text={ Text("Sad",
-                    fontWeight = FontWeight.SemiBold,
-                    modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp),
-                    textAlign = TextAlign.Center) },
-                    onClick ={
-                        navController.navigate("nostalgia")})
-                Divider(
-                    color = Color.Gray,
-                    thickness = 3.dp,
-                    modifier = Modifier.padding(horizontal = 8.dp)
-                )
+
                 DropdownMenuItem(text={ Text("Retro",
                     fontWeight = FontWeight.SemiBold,
                     modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp),
